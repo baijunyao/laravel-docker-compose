@@ -1,0 +1,38 @@
+{
+    "name": "baijunyao/laravel-docker-compose",
+    "keywords": ["laravel", "docker", "compose"],
+    "description": "Docker compose for laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "baijunyao",
+            "email": "baijunyao@baijunyao.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^9.0",
+        "illuminate/console": "^9.0"
+    },
+    "require-dev": {
+        "baijunyao/php-cs-fixer-config": "^0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Baijunyao\\LaravelDockerCompose\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Baijunyao\\LaravelDockerCompose\\LaravelDockerComposeServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "phpcs": "vendor/bin/php-cs-fixer fix",
+        "lint": [
+            "composer phpcs"
+        ]
+    }
+}
