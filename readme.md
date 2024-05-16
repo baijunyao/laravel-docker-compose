@@ -6,7 +6,7 @@ Laravel Docker Compose provides a Docker powered local development experience fo
 
 Require this package with composer using the following command:
 ```bash
-composer require baijunyao/laravel-docker-compose
+composer require baijunyao/laravel-docker-compose --dev
 ```
 
 ## Usage
