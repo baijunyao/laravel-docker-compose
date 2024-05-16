@@ -12,7 +12,7 @@ services:
       DOCUMENT_ROOT: /app/public
 
   php:
-    image: baijunyao/php:{{php_version}}-${APP_ENV}
+    image: baijunyao/php:{{php_version}}-fpm-${APP_ENV}
     tty: true
     volumes:
       - .:/app
