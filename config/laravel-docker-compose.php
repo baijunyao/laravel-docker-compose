@@ -5,7 +5,7 @@ return [
     'nginx_version' => '1.19',
 
     // https://hub.docker.com/r/baijunyao/php/tags
-    'php_version' => '8.1',
+    'php_version' => '8.3',
 
     // https://hub.docker.com/r/baijunyao/mysql/tags
     'mysql_version' => '8.0',
