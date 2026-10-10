@@ -46,19 +46,11 @@ class PublishCommand extends Command
         $version_config = Config::get('laravel-docker-compose');
 
         if (File::exists($this->laravel->basePath('docker-compose.yml'))) {
-            if ($this->confirm('A The docker-compose.yml already exists. Do you want to overwrite it?')) {
+            if ($this->confirm('The docker-compose.yml already exists. Do you want to overwrite it?')) {
                 $this->publishDockerCompose($version_config);
             }
         } else {
             $this->publishDockerCompose($version_config);
-        }
-
-        if (File::exists($this->laravel->basePath('docker-compose-nfs.yml'))) {
-            if ($this->confirm('A The docker-compose-nfs already exists. Do you want to overwrite it?')) {
-                $this->publishDockerComposeNfs($version_config);
-            }
-        } else {
-            $this->publishDockerComposeNfs($version_config);
         }
     }
 
@@ -73,9 +65,11 @@ class PublishCommand extends Command
             str_replace(
                 [
                     '{{server_name}}',
+                    '{{project_name}}',
                 ],
                 [
                     parse_url(Config::get('app.url'), PHP_URL_HOST),
+                    $this->projectName(),
                 ],
                 File::get(__DIR__ . '/../../stubs/nginx.stub')
             )
@@ -84,51 +78,26 @@ class PublishCommand extends Command
 
     public function publishDockerCompose(array $version_config): void
     {
-        $database_config = Config::get('database.connections.mysql');
-
         File::put(
             $this->laravel->basePath('docker-compose.yml'),
             str_replace(
                 [
                     '{{nginx_version}}',
                     '{{php_version}}',
-                    '{{mysql_version}}',
-                    '{{elasticsearch_version}}',
-                    '{{redis_version}}',
-                    '{{mysql_user}}',
-                    '{{mysql_database}}',
-                    '{{mysql_password}}',
+                    '{{project_name}}',
                 ],
                 [
                     $version_config['nginx_version'],
                     $version_config['php_version'],
-                    $version_config['mysql_version'],
-                    $version_config['elasticsearch_version'],
-                    $version_config['redis_version'],
-                    $database_config['username'],
-                    $database_config['database'],
-                    $database_config['password'] ?? '',
+                    $this->projectName(),
                 ],
                 File::get(__DIR__ . '/../../stubs/docker-compose.stub')
             )
         );
     }
 
-    public function publishDockerComposeNfs(array $version_config): void
+    protected function projectName(): string
     {
-        File::put(
-            $this->laravel->basePath('docker-compose-nfs.yml'),
-            str_replace(
-                [
-                    '{{nginx_version}}',
-                    '{{php_version}}',
-                ],
-                [
-                    $version_config['nginx_version'],
-                    $version_config['php_version'],
-                ],
-                File::get(__DIR__ . '/../../stubs/docker-compose-nfs.stub')
-            )
-        );
+        return strtolower(basename($this->laravel->basePath()));
     }
 }

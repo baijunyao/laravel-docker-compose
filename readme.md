@@ -11,20 +11,16 @@ composer require baijunyao/laravel-docker-compose --dev
 
 ## Usage
 
-Publish the config and docker-compose.yml files
+Publish the config, docker-compose.yml and nginx config files
 ```bash
 php artisan laravel-docker-compose:publish
 ```
 
-## Set Up Docker For Mac with Native NFS
-The default file system that Docker uses is quite slow in the Mac environment, for that reason, many dev’s used NFS.
+This will generate:
 
-Setup native NFS for Docker:
-```bash
-./vendor/baijunyao/laravel-docker-compose/bin/setup_native_nfs_docker_osx.sh
-```
+- `config/laravel-docker-compose.php` — nginx / php image versions
+- `deploy/docker/nginx/default.conf` — nginx virtual host (server name comes from `APP_URL`)
+- `docker-compose.yml` — nginx + php services, connected to the external `traefik` network
 
-Use docker-compose-nfs.yml
-```bash
-docker compose -f docker-compose-nfs.yml up
-```
+Container names are prefixed with the project directory name (e.g. `msh-nginx`, `msh-php`).
+MySQL and Redis are expected to run on the host machine and are accessed via `docker.for.mac.host.internal`.
